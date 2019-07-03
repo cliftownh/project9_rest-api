@@ -1,5 +1,7 @@
 'use strict';
 
+const bcrypt = require('bcryptjs');
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     firstName: {
@@ -37,7 +39,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   User.associate = (models) => {
-    User.hasMany(models.Course, { foreignKey: 'userId' });
+    User.hasMany(models.Course,  { 
+      as: 'user',
+      foreignKey: {
+        fieldName: 'userId', 
+        allowNull: false
+      }
+    });
   };
   
   return User;
